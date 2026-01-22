@@ -1,5 +1,5 @@
 import './globals.css'
-import MSWProvider from './MSWProvider'
+
 import { Providers } from './providers'
 
 export default function RootLayout({
@@ -10,7 +10,6 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <MSWProvider />
         <Providers>{children}</Providers>
       </body>
     </html>
