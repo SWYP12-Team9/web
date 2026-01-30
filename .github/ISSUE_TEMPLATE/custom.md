@@ -1,0 +1,33 @@
+---
+name: Custom issue template
+about: Describe this issue template's purpose here.
+title: ''
+labels: ''
+assignees: ''
+
+---
+
+- ✨ **Feat**: 새로운 기능 추가
+- 📦️ **Chore**: 코드 변경 없는 작업 (빌드, 설정 등)
+- 💄 **Design**: 디자인 관련 변경
+- 🚑️ **Fix**: 버그 수정
+- ✅ **Test**: 테스트 관련 작업
+- 🚀 **Deploy**: 배포 관련 작업
+- 🔨 **Refactor**: 코드 리팩토링
+- 📚 **Docs**: 문서 추가 및 수정
+
+> 이슈 제목은 깃모지를 포함한 형식을 따르세요.
+
+# 작업 설명
+
+작업의 목표를 간단하고 명료하게 설명해주세요.
+
+## 세부 작업 목록
+
+- [ ] Todo
+- [ ] Todo
+
+## 관련 이슈
+
+
+## 코멘트 (optional)
