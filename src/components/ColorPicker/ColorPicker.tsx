@@ -4,22 +4,21 @@ import { cn } from '@/src/utils/cn'
 import Image from 'next/image'
 import { HexColorPicker } from 'react-colorful'
 import { ColorOption } from './types'
+import { useState } from 'react'
 
 interface ColorPickerProps {
   color: string
   colorOptions: ColorOption[]
-  isPickerOpen: boolean
   setColor: (color: string) => void
-  setPickerOpen: (isPickerOpen: boolean) => void
 }
 
 export function ColorPicker({
   color,
   colorOptions,
-  isPickerOpen,
   setColor,
-  setPickerOpen,
 }: ColorPickerProps) {
+  const [isPickerOpen, setPickerOpen] = useState(false)
+
   return (
     <div className="flex items-center gap-10">
       {colorOptions.map((option) => (

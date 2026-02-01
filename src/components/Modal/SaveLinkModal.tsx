@@ -7,7 +7,6 @@ import { Input } from '@/src/components/Input'
 import { Modal } from '@/src/components/Modal'
 import { TextArea } from '@/src/components/TextArea'
 import { COLOR_OPTIONS } from '@/src/constants/colorOptions'
-import { useState } from 'react'
 import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form'
 import { SaveLinkFormData } from './types'
 
@@ -28,8 +27,6 @@ export function SaveLinkModal({
   setModalOpen,
   onSubmit,
 }: SaveLinkModalProps) {
-  const [isPickerOpen, setPickerOpen] = useState(false)
-
   const { control, register, handleSubmit } = useForm<SaveLinkFormData>({
     defaultValues: {
       why: '',
@@ -125,8 +122,6 @@ export function SaveLinkModal({
                   colorOptions={COLOR_OPTIONS}
                   color={field.value}
                   setColor={field.onChange}
-                  isPickerOpen={isPickerOpen}
-                  setPickerOpen={setPickerOpen}
                 />
               )}
             />
