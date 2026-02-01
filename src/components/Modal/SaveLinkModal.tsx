@@ -27,7 +27,7 @@ export function SaveLinkModal({
   setModalOpen,
   onSubmit,
 }: SaveLinkModalProps) {
-  const { control, register, handleSubmit } = useForm<SaveLinkFormData>({
+  const { reset, control, register, handleSubmit } = useForm<SaveLinkFormData>({
     defaultValues: {
       why: '',
       url: '',
@@ -139,7 +139,10 @@ export function SaveLinkModal({
           width="w-85"
           height="h-42"
           variant="secondary"
-          onClick={() => setModalOpen(false)}
+          onClick={() => {
+            setModalOpen(false)
+            reset()
+          }}
         >
           취소
         </Button>
