@@ -16,7 +16,7 @@ export function MyLinkCardHeader({ title, colorCode }: MyLinkCardHeaderProps) {
         <span className="text-caption-1 text-gray-disabled">{title}</span>
       </div>
       <button className="p-2">
-        <Image src="/icons/card/more.svg" alt="more" width={22} height={22} />
+        <Image src="/icons/more.svg" alt="more" width={22} height={22} />
       </button>
     </div>
   )

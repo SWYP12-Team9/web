@@ -12,7 +12,7 @@ export function MyLinkCardFooter({
   return (
     <div className="flex items-center gap-8">
       <div className="flex items-center gap-[2px]">
-        <Image src="../icons/card/view.svg" alt="view" width={18} height={18} />
+        <Image src="../icons/view.svg" alt="view" width={18} height={18} />
         <span className="text-caption-2 text-gray-disabled">{viewCount}</span>
       </div>
       <ReadStatusTag isRead={isRead} />

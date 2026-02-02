@@ -53,7 +53,7 @@ export function Drawer({
     >
       <div className="mb-24 flex shrink-0 items-center justify-between">
         <Image
-          src="../icons/drawer/arrowdouble-right.svg"
+          src="../icons/close-tab.svg"
           alt="close"
           width={22}
           height={22}
@@ -61,13 +61,10 @@ export function Drawer({
           onClick={handleClose}
         />
         <div className="flex items-center gap-[2px]">
-          <Image
-            src="../icons/drawer/view.svg"
-            alt="view"
-            width={22}
-            height={22}
-          />
-          <span className="text-caption-1 text-gray-disabled">{viewCount}</span>
+          <Image src="../icons/view.svg" alt="view" width={22} height={22} />
+          <span className="text-caption-1 text-gray-disabled mr-8">
+            {viewCount}
+          </span>
           <span className="text-caption-2 text-gray-disabled">열람</span>
         </div>
       </div>

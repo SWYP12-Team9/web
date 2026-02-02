@@ -30,7 +30,7 @@ export function LinkCardLayout({
         <div className="flex min-h-[66px] gap-3">
           <div className="mt-1 shrink-0">
             <Image
-              src="../icons/card/sparkle.svg"
+              src="../icons/sparkle.svg"
               alt="sparkle"
               width={22}
               height={22}
@@ -47,7 +47,7 @@ export function LinkCardLayout({
             {footer}
             <button className="p-2">
               <Image
-                src="../icons/card/copy.svg"
+                src="../icons/copy.svg"
                 alt="copy"
                 width={22}
                 height={22}
