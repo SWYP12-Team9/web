@@ -1,10 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
-import { requestGetReferenceList } from '../../request/reference/requestGetReferenceList'
+import {
+  requestGetReferenceList,
+  RequestGetReferenceListParams,
+} from '../../request/requestGetReferenceList'
 import { referenceKeys } from './referenceKeys'
 
-export const useGetReferenceList = () => {
+export const useGetReferenceList = ({
+  type,
+  sortBy,
+}: RequestGetReferenceListParams) => {
   return useQuery({
-    queryKey: referenceKeys.list('all'),
-    queryFn: () => requestGetReferenceList({}),
+    queryKey: referenceKeys.list(type),
+    queryFn: () => requestGetReferenceList({ type }),
   })
 }
