@@ -5,7 +5,7 @@ import { TabItem } from './TabItem'
 import { Tab, TabVariant } from './types'
 
 export interface TabsProps {
-  tabs: Tab[]
+  tabs?: Tab[]
   selectedTab: Tab | null
   onChange: (tab: Tab) => void
   className?: string
@@ -13,17 +13,21 @@ export interface TabsProps {
 }
 
 export function Tabs({
-  tabs,
+  tabs = [],
   selectedTab,
   onChange,
   className = '',
 }: TabsProps) {
+  const allTab: Tab = { id: 'all', title: '전체' }
+
+  const tabList = [allTab, ...tabs]
+
   return (
     <div
       className={cn('scrollbar-hide flex gap-10 overflow-x-auto', className)}
       role="tablist"
     >
-      {tabs.map((tab) => {
+      {tabList.map((tab) => {
         const isSelected = tab.id === selectedTab?.id
 
         return (
