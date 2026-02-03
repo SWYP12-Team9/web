@@ -1,21 +1,10 @@
+import { LinkItem } from '@/src/types/link/link'
 import { MyLinkCardFooter } from './LinkCardFooter'
 import { MyLinkCardHeader } from './LinkCardHeader'
 import { LinkCardLayout } from './LinkCardLayout'
 
 interface MyLinkCardProps {
-  data: {
-    id: number
-    title: string
-    aiSummary: string
-    status: 'READ' | 'UNREAD'
-    viewCount: number
-    references: {
-      id: number
-      title: string
-      colorCode: string
-      isDefault: boolean
-    }
-  }
+  data: LinkItem
 }
 
 export function MyLinkCard({ data }: MyLinkCardProps) {
