@@ -2,37 +2,47 @@
 
 import { Button } from '@/src/components/Button'
 import { ColorPicker } from '@/src/components/ColorPicker'
-import { Dropdown, DropdownOption } from '@/src/components/Dropdown'
+import { Dropdown } from '@/src/components/Dropdown'
 import { Input } from '@/src/components/Input'
 import { Modal } from '@/src/components/Modal'
 import { TextArea } from '@/src/components/TextArea'
 import { COLOR_OPTIONS } from '@/src/constants/colorOptions'
-import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { SaveLinkFormData } from './types'
+import { useSaveLinkModalStore } from '@/src/store/saveLinkModalStore'
+import { useGetReferenceList } from '@/src/apis/query/reference/useGetReferenceList'
+import { ReferenceItem } from '@/src/types/reference/reference'
+import { useEffect } from 'react'
 
-interface SaveLinkModalProps {
-  dropdownOptions?: DropdownOption[]
-  isModalOpen: boolean
-  setModalOpen: (isModalOpen: boolean) => void
-  onSubmit: (data: FieldValues) => void
-}
+export function SaveLinkModal() {
+  const isModalOpen = useSaveLinkModalStore((state) => state.isOpen)
+  const close = useSaveLinkModalStore((state) => state.close)
+  const urlValue = useSaveLinkModalStore((state) => state.url)
 
-export function SaveLinkModal({
-  dropdownOptions,
-  isModalOpen,
-  setModalOpen,
-  onSubmit,
-}: SaveLinkModalProps) {
-  const { reset, control, register, handleSubmit } = useForm<SaveLinkFormData>({
-    defaultValues: {
-      why: '',
-      url: '',
-      selectedFolder: null,
-      newFolder: '',
-      colorCode: '',
-      memo: '',
-    },
-  })
+  const { data: referenceList } = useGetReferenceList({ type: 'all' })
+
+  const dropdownOptions = referenceList?.data?.contents.map(
+    (item: ReferenceItem) => ({
+      id: item.id,
+      title: item.title,
+    }),
+  )
+
+  const { reset, control, register, setValue, handleSubmit } =
+    useForm<SaveLinkFormData>({
+      defaultValues: {
+        why: '',
+        url: '',
+        selectedFolder: null,
+        newFolder: '',
+        colorCode: '',
+        memo: '',
+      },
+    })
+
+  useEffect(() => {
+    if (isModalOpen) setValue('url', urlValue)
+  }, [isModalOpen, urlValue])
 
   const selectedFolder = useWatch({
     control,
@@ -40,6 +50,8 @@ export function SaveLinkModal({
   })
 
   const isCreateMode = selectedFolder?.id === 'create-folder'
+
+  const onSubmit = () => {}
 
   return (
     <Modal isOpen={isModalOpen} width="w-400" className="flex flex-col gap-20">
@@ -136,7 +148,7 @@ export function SaveLinkModal({
           height="h-42"
           variant="secondary"
           onClick={() => {
-            setModalOpen(false)
+            close()
             reset()
           }}
         >
