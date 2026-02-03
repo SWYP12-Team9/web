@@ -10,19 +10,15 @@ import { COLOR_OPTIONS } from '@/src/constants/colorOptions'
 import { Controller, FieldValues, useForm, useWatch } from 'react-hook-form'
 import { SaveLinkFormData } from './types'
 
-const folderOptions: DropdownOption[] = [
-  { id: 1, title: '스위프' },
-  { id: 2, title: '과제' },
-  { id: 3, title: '콜라' },
-]
-
 interface SaveLinkModalProps {
+  dropdownOptions?: DropdownOption[]
   isModalOpen: boolean
   setModalOpen: (isModalOpen: boolean) => void
   onSubmit: (data: FieldValues) => void
 }
 
 export function SaveLinkModal({
+  dropdownOptions,
   isModalOpen,
   setModalOpen,
   onSubmit,
@@ -70,7 +66,7 @@ export function SaveLinkModal({
           control={control}
           render={({ field }) => (
             <Dropdown
-              options={folderOptions}
+              options={dropdownOptions}
               value={field.value}
               onChange={field.onChange}
               placeholder="레퍼런스 폴더를 선택해주세요"

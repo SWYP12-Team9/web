@@ -5,6 +5,13 @@ import { ProfileModal } from '@/src/components/Modal/ProfileModal'
 import { SaveLinkModal } from '@/src/components/Modal/SaveLinkModal'
 import { useState } from 'react'
 import { FieldValues } from 'react-hook-form'
+import { DropdownOption } from '@/src/components/Dropdown'
+
+const referenceFolders: DropdownOption[] = [
+  { id: 1, title: '스위프' },
+  { id: 2, title: '과제' },
+  { id: 3, title: '콜라' },
+]
 
 export default function ModalTest() {
   const onSubmit = (data: FieldValues) => {
@@ -32,6 +39,7 @@ export default function ModalTest() {
       </div>
 
       <SaveLinkModal
+        dropdownOptions={referenceFolders}
         isModalOpen={isSaveLinkModalOpen}
         setModalOpen={setSaveLinkModalOpen}
         onSubmit={onSubmit}
