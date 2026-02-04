@@ -11,6 +11,10 @@ export function LinkListContainer({
   linkList,
   isLoading,
 }: LinkListContainerProps) {
+  const handleDelete = (id: number) => {
+    console.log('선택 id:', id)
+  }
+
   return isLoading ? (
     <div className="pt-35 text-center">Loading...</div>
   ) : !linkList.length ? (
@@ -27,7 +31,7 @@ export function LinkListContainer({
       </span>
       <div className="flex flex-wrap gap-10">
         {linkList.map((item: LinkItem) => (
-          <MyLinkCard key={item.id} data={item} />
+          <MyLinkCard key={item.id} data={item} onDelete={handleDelete} />
         ))}
       </div>
     </div>

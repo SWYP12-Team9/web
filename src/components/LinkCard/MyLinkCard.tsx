@@ -5,9 +5,10 @@ import { LinkCardLayout } from './LinkCardLayout'
 
 interface MyLinkCardProps {
   data: LinkItem
+  onDelete: (id: number) => void
 }
 
-export function MyLinkCard({ data }: MyLinkCardProps) {
+export function MyLinkCard({ data, onDelete }: MyLinkCardProps) {
   return (
     <LinkCardLayout
       title={data.title}
@@ -16,6 +17,7 @@ export function MyLinkCard({ data }: MyLinkCardProps) {
         <MyLinkCardHeader
           title={data.references.title}
           colorCode={data.references.colorCode}
+          onDelete={() => onDelete(data.id)}
         />
       }
       footer={
