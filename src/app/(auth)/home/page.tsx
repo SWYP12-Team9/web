@@ -9,9 +9,11 @@ import { useState } from 'react'
 import { LinkListContainer } from './_components/LinkListContainer/LinkListContainer'
 import { SearchLinksInput } from './_components/SearchLinksInput/SearchLinksInput'
 import { SaveLinkInput } from './_components/SaveLinkInput/SaveLinkInput'
+import { useDrawerStore } from '@/src/store/drawerStore'
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState<Tab | null>(ALL_TAB)
+  const closeDrawer = useDrawerStore((state) => state.close)
 
   const { data: linkListData, isLoading: isLinkListLoading } = useGetLinkList(
     selectedTab?.id === 'all' ? {} : { referenceId: selectedTab?.id },
@@ -28,6 +30,7 @@ export default function Home() {
 
   const handleTabChange = (tab: Tab) => {
     setSelectedTab(tab)
+    closeDrawer()
   }
 
   return (
@@ -40,7 +43,6 @@ export default function Home() {
 
       <SaveLinkInput />
 
-      {/* 스크롤 시 상단에 고정 */}
       <div className="sticky top-0 z-10 mt-25 bg-white">
         <SearchLinksInput />
         <Tabs

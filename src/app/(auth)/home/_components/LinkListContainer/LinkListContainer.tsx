@@ -3,6 +3,7 @@ import { useGetLinkDetails } from '@/src/apis/query/link/useGetLinkDetails'
 import { Drawer } from '@/src/components/Drawer'
 import { MyLinkCard } from '@/src/components/LinkCard'
 import { MoveLinkModal } from '@/src/components/Modal/MoveLinkModal'
+import { useDrawerStore } from '@/src/store/drawerStore'
 import { LinkItem } from '@/src/types/link/link'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -17,8 +18,10 @@ export function LinkListContainer({
   isLoading,
 }: LinkListContainerProps) {
   const [selectedLinkId, setSelectedLinkId] = useState<number | null>(null)
-  const [isDrawerOpen, setDrawerOpen] = useState(false)
   const [isMoveLinkModalOpen, setMoveLinkModalOpen] = useState(false)
+
+  const openDrawer = useDrawerStore((state) => state.open)
+  const initializeValues = useDrawerStore((state) => state.initializeValues)
 
   const { mutateAsync: deleteLink } = useDeleteLinkMutation()
   const { data: linkDetailsData, isLoading: isLinkDetailsLoading } =
@@ -32,7 +35,11 @@ export function LinkListContainer({
 
   const handleOpenLinkDetail = (id: number) => {
     setSelectedLinkId(id)
-    setDrawerOpen(true)
+    initializeValues({
+      why: linkDetails?.why ?? '',
+      memo: linkDetails?.memo ?? '',
+    })
+    openDrawer()
   }
 
   const handleOpenMoveLinkModal = () => {
@@ -60,24 +67,25 @@ export function LinkListContainer({
           </div>
         ))}
       </div>
-      {isDrawerOpen && !isLinkDetailsLoading && (
+
+      {!isLinkDetailsLoading && (
         <Drawer
-          onClose={() => setDrawerOpen(false)}
           onMoveLinkModalOpen={handleOpenMoveLinkModal}
           categoryColor={linkDetails?.reference?.colorCode ?? ''}
           categoryName={linkDetails?.reference?.title ?? ''}
           viewCount={linkDetails?.viewCount ?? 0}
           title={linkDetails?.title ?? ''}
-          reason={linkDetails?.why ?? ''}
+          defaultWhy={linkDetails?.why ?? ''}
           link={linkDetails?.url ?? ''}
           aiSummary={linkDetails?.aiSummary ?? ''}
-          memo={linkDetails?.memo ?? ''}
+          defaultMemo={linkDetails?.memo ?? ''}
         />
       )}
       {isMoveLinkModalOpen && (
         <MoveLinkModal
           isModalOpen={isMoveLinkModalOpen}
           onClose={() => setMoveLinkModalOpen(false)}
+          linkId={selectedLinkId}
         />
       )}
     </div>

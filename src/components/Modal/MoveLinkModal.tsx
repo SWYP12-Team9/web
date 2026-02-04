@@ -1,21 +1,33 @@
-import { Controller, useForm, useWatch } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { Button } from '../Button'
 import { Modal } from './Modal'
-import { ColorPicker } from '../ColorPicker'
-import { COLOR_OPTIONS } from '@/src/constants/colorOptions'
 import { Dropdown } from '../Dropdown'
 import { useGetReferenceList } from '@/src/apis/query/reference/useGetReferenceList'
 import { ReferenceItem } from '@/src/types/reference/reference'
-import { Input } from '../Input'
 import { MoveLinkFormData } from './types'
+import { usePatchLinkMutation } from '@/src/apis/query/link/usePatchLinkMutation'
+import { useDrawerStore } from '@/src/store/drawerStore'
 
 interface MoveLinkModalProps {
   isModalOpen: boolean
   onClose: () => void
+  linkId: number | null
 }
 
-export function MoveLinkModal({ isModalOpen, onClose }: MoveLinkModalProps) {
+export function MoveLinkModal({
+  isModalOpen,
+  onClose,
+  linkId,
+}: MoveLinkModalProps) {
+  const why = useDrawerStore((state) => state.why)
+  const memo = useDrawerStore((state) => state.memo)
+  const initialWhy = useDrawerStore((state) => state.initialWhy)
+  const initialMemo = useDrawerStore((state) => state.initialMemo)
+
+  const closeDrawer = useDrawerStore((state) => state.close)
+
   const { data: referenceList } = useGetReferenceList({ type: 'all' })
+  const { mutateAsync: patchLink } = usePatchLinkMutation()
 
   const dropdownOptions = referenceList?.data?.contents.map(
     (item: ReferenceItem) => ({
@@ -24,28 +36,55 @@ export function MoveLinkModal({ isModalOpen, onClose }: MoveLinkModalProps) {
     }),
   )
 
-  const { reset, control, register, handleSubmit } = useForm<MoveLinkFormData>({
+  const { reset, control, handleSubmit } = useForm<MoveLinkFormData>({
     defaultValues: {
-      newFolder: '',
-      colorCode: '',
       selectedFolder: null,
     },
   })
 
-  const selectedFolder = useWatch({
-    control,
-    name: 'selectedFolder',
-  })
+  const onSubmit = async (data: MoveLinkFormData) => {
+    const body: {
+      why?: string
+      memo?: string
+      referenceId?: number
+      moveToDefault?: boolean
+    } = {}
 
-  const isCreateMode = selectedFolder?.id === 'create-folder'
+    if (why !== initialWhy) body.why = why
+    if (memo !== initialMemo) body.memo = memo
 
-  const onSubmit = (data: MoveLinkFormData) => {
-    console.log(data)
+    const selectedFolder = data.selectedFolder
+
+    if (selectedFolder) {
+      const isSameFolder = selectedFolder.id === linkId
+      const isDefaultFolder = selectedFolder.title === '미지정'
+
+      if (!isSameFolder) {
+        if (isDefaultFolder) {
+          body.moveToDefault = true
+        } else {
+          body.referenceId = selectedFolder.id as number
+        }
+      }
+    }
+
+    if (Object.keys(body).length === 0) {
+      alert('변경된 내용이 없습니다.')
+      return
+    }
+
+    await patchLink({
+      userLinkId: linkId as number,
+      body,
+    })
+
+    closeDrawer()
+    onClose()
+    reset()
   }
 
   return (
     <Modal isOpen={isModalOpen} width="w-400" className="flex flex-col gap-20">
-      {/* 기존 레퍼런스 폴더 선택 */}
       <div className="flex flex-col gap-12">
         <label className="text-body-1 text-gray-default">
           레퍼런스 폴더 이동
@@ -60,55 +99,10 @@ export function MoveLinkModal({ isModalOpen, onClose }: MoveLinkModalProps) {
               value={field.value}
               onChange={field.onChange}
               placeholder="레퍼런스 폴더를 선택해주세요"
-              footerButton={(close) => (
-                <button
-                  onClick={() => {
-                    close()
-                    field.onChange({
-                      id: 'create-folder',
-                      title: '레퍼런스 폴더 생성',
-                    })
-                  }}
-                  className="text-caption-1 rounded-8 text-gray-muted hover:bg-gray-muted w-full px-20 py-11 text-left transition-colors hover:text-black"
-                >
-                  새로운 폴더 추가
-                </button>
-              )}
             />
           )}
         />
       </div>
-
-      {isCreateMode && (
-        <>
-          {/* 색상 선택 */}
-          <div className="flex flex-col gap-12">
-            <label className="text-body-1 text-gray-default">색상 선택</label>
-            <Controller
-              name="colorCode"
-              control={control}
-              render={({ field }) => (
-                <ColorPicker
-                  colorOptions={COLOR_OPTIONS}
-                  color={field.value}
-                  setColor={field.onChange}
-                />
-              )}
-            />
-          </div>
-
-          {/* 추가할 레퍼런스 폴더명 */}
-          <div className="flex flex-col gap-12">
-            <label className="text-body-1 text-gray-default">
-              레퍼런스 이름
-            </label>
-            <Input
-              placeholder="레퍼런스 폴더 이름을 입력해 주세요"
-              {...register('newFolder')}
-            />
-          </div>
-        </>
-      )}
 
       <div className="mt-14 flex justify-end gap-20">
         <Button

@@ -56,6 +56,7 @@ export default function ModalTest() {
       <MoveLinkModal
         isModalOpen={isMoveLinkModalOpen}
         onClose={handleCloseMoveLinkModal}
+        linkId={0}
       />
     </div>
   )
