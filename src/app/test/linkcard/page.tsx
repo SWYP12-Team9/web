@@ -1,3 +1,5 @@
+'use client'
+
 import { MyLinkCard } from '@/src/components/LinkCard/MyLinkCard'
 import { OtherLinkCard } from '@/src/components/LinkCard/OtherLinkCard'
 
