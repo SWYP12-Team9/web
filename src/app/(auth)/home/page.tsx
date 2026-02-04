@@ -31,7 +31,7 @@ export default function Home() {
   }
 
   return (
-    <div className="scrollbar-hide h-full overflow-y-auto">
+    <div className="scrollbar-hide h-full overflow-y-auto px-84">
       <h1 className="text-display-2 text-gray-default pb-38">
         Save Links.
         <br />
