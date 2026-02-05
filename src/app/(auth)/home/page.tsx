@@ -79,7 +79,11 @@ export default function Home() {
         />
       </div>
 
-      <LinkListContainer linkList={linkList} isLoading={isLoading} />
+      <LinkListContainer
+        linkList={linkList}
+        isLoading={isLoading}
+        isSearchMode={isSearchMode}
+      />
     </div>
   )
 }
