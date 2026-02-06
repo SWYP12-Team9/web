@@ -8,17 +8,38 @@ import { useState } from 'react'
 import { SearchLinksInput } from '../home/_components/SearchLinksInput/SearchLinksInput'
 import { useGetOtherUserLinkList } from '@/src/apis/query/recommendation/useGetOtherUserLinkList'
 import { OtherUserLinksContainer } from './_components/OtherUserLinksContainer/OtherUserLinksContainer'
+import { useDebounce } from '@/src/hooks/useDebounce'
+import { useGetSearchOtherUserLinks } from '@/src/apis/query/recommendation/useGetSearchOtherUserLinks'
 
 export default function ExplorePage() {
   const [selectedTab, setSelectedTab] = useState<Tab>(ALL_TAB)
   const [searchKeyword, setSearchKeyword] = useState('')
 
+  const debouncedKeyword = useDebounce({
+    value: searchKeyword,
+    delay: 500,
+  })
+
+  const isSearchMode = debouncedKeyword.trim().length > 0
+
   const { data: categories } = useGetCategories()
-  const { data: otherUserLinkList, isLoading: isOtherUserLinkListLoading } =
+  const { data: otherUserLinkListData, isLoading: isOtherUserLinkListLoading } =
     useGetOtherUserLinkList({
       category: selectedTab?.id === 'all' ? undefined : selectedTab.title,
       size: 20,
     })
+
+  const {
+    data: searchOtherUserLinks,
+    isLoading: isSearchOtherUserLinksLoading,
+  } = useGetSearchOtherUserLinks({
+    keyword: debouncedKeyword,
+    size: 20,
+  })
+
+  const otherUserLinkList = isSearchMode
+    ? (searchOtherUserLinks?.data ?? [])
+    : (otherUserLinkListData?.data ?? [])
 
   const tabs = categories?.data.map((category, index) => ({
     id: index,
@@ -51,8 +72,13 @@ export default function ExplorePage() {
       </div>
 
       <OtherUserLinksContainer
-        otherUserLinkList={otherUserLinkList?.data ?? []}
-        isLoading={isOtherUserLinkListLoading}
+        otherUserLinkList={otherUserLinkList}
+        isLoading={
+          isSearchMode
+            ? isSearchOtherUserLinksLoading
+            : isOtherUserLinkListLoading
+        }
+        isSearchMode={isSearchMode}
       />
 
       <ProfileSetup />

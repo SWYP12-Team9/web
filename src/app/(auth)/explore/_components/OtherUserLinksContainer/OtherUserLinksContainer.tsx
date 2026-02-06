@@ -4,15 +4,18 @@ import { OtherLinkCard } from '@/src/components/LinkCard'
 import { OtherUserLinkItem } from '@/src/types/recommendations/recommendations'
 import { SaveOtherUserLinkModal } from '../SaveOtherUserLinkModal/SaveOtherUserLinkModal'
 import { useState } from 'react'
+import { EmptyLinks } from '@/src/components/EmptyLinks/EmptyLinks'
 
 interface OtherUserLinksContainerProps {
   otherUserLinkList: OtherUserLinkItem[]
   isLoading: boolean
+  isSearchMode: boolean
 }
 
 export function OtherUserLinksContainer({
   otherUserLinkList,
   isLoading,
+  isSearchMode,
 }: OtherUserLinksContainerProps) {
   const [selectedLink, setSelectedLink] = useState<OtherUserLinkItem | null>(
     null,
@@ -20,7 +23,7 @@ export function OtherUserLinksContainer({
 
   return isLoading ? (
     <div className="text-center">Loading...</div>
-  ) : (
+  ) : otherUserLinkList.length ? (
     <div className="relative min-h-0">
       <div className="scrollbar-hide h-full overflow-y-auto pb-24">
         <ul className="flex flex-wrap gap-10">
@@ -41,5 +44,7 @@ export function OtherUserLinksContainer({
         </div>
       )}
     </div>
+  ) : (
+    <EmptyLinks isSearchMode={isSearchMode} />
   )
 }
