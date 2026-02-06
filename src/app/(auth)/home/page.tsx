@@ -69,7 +69,11 @@ export default function Home() {
       <SaveLinkInput />
 
       <div className="sticky top-0 z-10 mt-25 bg-white">
-        <SearchLinksInput value={searchKeyword} onChange={handleSearchChange} />
+        <SearchLinksInput
+          value={searchKeyword}
+          placeholder="왜 저장했는지로 검색해 보세요"
+          onChange={handleSearchChange}
+        />
         <Tabs
           className="pt-35 pb-12"
           defaultTap={ALL_TAB}
