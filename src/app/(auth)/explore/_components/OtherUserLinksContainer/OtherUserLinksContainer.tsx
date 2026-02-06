@@ -21,19 +21,24 @@ export function OtherUserLinksContainer({
   return isLoading ? (
     <div className="text-center">Loading...</div>
   ) : (
-    <div className="relative">
-      <div className="flex flex-wrap gap-10">
-        {otherUserLinkList?.map((item: OtherUserLinkItem) => (
-          <div key={item.id} onClick={() => setSelectedLink(item)}>
-            <OtherLinkCard data={item} />
-          </div>
-        ))}
+    <div className="relative min-h-0">
+      <div className="scrollbar-hide h-full overflow-y-auto pb-24">
+        <ul className="flex flex-wrap gap-10">
+          {otherUserLinkList?.map((item: OtherUserLinkItem) => (
+            <li key={item.id} onClick={() => setSelectedLink(item)}>
+              <OtherLinkCard data={item} />
+            </li>
+          ))}
+        </ul>
       </div>
+
       {selectedLink && (
-        <SaveOtherUserLinkModal
-          data={selectedLink}
-          onClose={() => setSelectedLink(null)}
-        />
+        <div className="absolute top-0 left-0 z-40">
+          <SaveOtherUserLinkModal
+            data={selectedLink}
+            onClose={() => setSelectedLink(null)}
+          />
+        </div>
       )}
     </div>
   )

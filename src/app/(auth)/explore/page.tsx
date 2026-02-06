@@ -34,19 +34,21 @@ export default function ExplorePage() {
   }
 
   return (
-    <main className="scrollbar-hide h-full overflow-y-auto px-84 pb-24">
-      <SearchLinksInput
-        value={searchKeyword}
-        onChange={handleSearchChange}
-        placeholder="키워드를 입력해 탐색해 보세요"
-      />
-      <Tabs
-        defaultTap={ALL_TAB}
-        tabs={tabs}
-        selectedTab={selectedTab}
-        onChange={handleTabChange}
-        className="py-30"
-      />
+    <main className="flex h-full flex-col overflow-y-hidden px-84">
+      <div className="shrink-0">
+        <SearchLinksInput
+          value={searchKeyword}
+          onChange={handleSearchChange}
+          placeholder="키워드를 입력해 탐색해 보세요"
+        />
+        <Tabs
+          defaultTap={ALL_TAB}
+          tabs={tabs}
+          selectedTab={selectedTab}
+          onChange={handleTabChange}
+          className="py-30"
+        />
+      </div>
 
       <OtherUserLinksContainer
         otherUserLinkList={otherUserLinkList?.data ?? []}

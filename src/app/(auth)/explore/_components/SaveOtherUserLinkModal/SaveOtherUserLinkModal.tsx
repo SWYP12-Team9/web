@@ -22,7 +22,7 @@ export function SaveOtherUserLinkModal({
   }
 
   return (
-    <div className="rounded-20 sticky top-0 bottom-0 z-40 flex h-592 w-682 flex-col gap-20 overflow-y-auto bg-white p-30 shadow-[0_0_20px_0_rgba(234,234,234,1)]">
+    <div className="rounded-20 z-40 flex h-592 w-682 flex-col gap-20 overflow-y-auto bg-white p-30 shadow-[0_0_20px_0_rgba(234,234,234,1)]">
       <Image
         src="/icons/close-tab-left.svg"
         alt="close modal"
