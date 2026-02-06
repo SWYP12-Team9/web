@@ -5,5 +5,5 @@ export default function ExploreLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <div>{children}</div>
+  return <div className="px-84 pt-36">{children}</div>
 }
