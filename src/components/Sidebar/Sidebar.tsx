@@ -10,7 +10,7 @@ import SidebarProfile from './SidebarProfile'
 import SidebarReferenceListList from './SidebarReferenceList'
 
 const navItems = [
-  { icon: NavHome, label: '홈', href: '/' },
+  { icon: NavHome, label: '홈', href: '/home' },
   { icon: NavExplore, label: '탐색', href: '/explore' },
   { icon: NavRef, label: '레퍼런스', href: '/reference' },
   { icon: NavMypage, label: '마이페이지', href: '/mypage' },
