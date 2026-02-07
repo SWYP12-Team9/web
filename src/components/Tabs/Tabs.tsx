@@ -19,6 +19,7 @@ export function Tabs({
   selectedTab,
   onChange,
   className = '',
+  variant = 'primary',
 }: TabsProps) {
   const tabList = [defaultTap, ...tabs]
 
@@ -36,6 +37,7 @@ export function Tabs({
             tab={tab}
             isSelected={isSelected}
             onChange={onChange}
+            variant={variant}
           />
         )
       })}
