@@ -9,6 +9,6 @@ export interface OtherUserLinkItem {
   user: {
     userId: number
     nickname: string
-    profileImageUrl: string | null
+    profileImageUrl: string
   }
 }

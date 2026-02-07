@@ -25,7 +25,7 @@ export function OtherLinkCardFooter({
   profileImageUrl,
 }: {
   nickname: string
-  profileImageUrl?: string | null
+  profileImageUrl: string
 }) {
   return (
     <div className="flex items-center">

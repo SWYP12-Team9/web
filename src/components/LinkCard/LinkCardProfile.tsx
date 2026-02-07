@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 interface LinkCardProfileProps {
   nickname: string
-  profileImageUrl?: string | null
+  profileImageUrl: string
 }
 
 export function LinkCardProfile({

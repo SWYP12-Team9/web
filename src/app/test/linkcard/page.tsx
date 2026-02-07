@@ -51,7 +51,7 @@ const MOCK_OTHER_DATA = [
     user: {
       userId: 1,
       nickname: '스위프',
-      profileImageUrl: null,
+      profileImageUrl: '/images/defaultProfile.png',
     },
   },
   {
@@ -65,7 +65,7 @@ const MOCK_OTHER_DATA = [
     user: {
       userId: 2,
       nickname: '홍길동',
-      profileImageUrl: null,
+      profileImageUrl: '/images/defaultProfile.png',
     },
   },
 ]
