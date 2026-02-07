@@ -1,11 +1,11 @@
 import { useDeleteLinkMutation } from '@/src/apis/query/link/useDeleteLinkMutation'
 import { useGetLinkDetails } from '@/src/apis/query/link/useGetLinkDetails'
 import { Drawer } from '@/src/components/Drawer'
+import { EmptyLinks } from '@/src/components/EmptyLinks/EmptyLinks'
 import { MyLinkCard } from '@/src/components/LinkCard'
 import { MoveLinkModal } from '@/src/components/Modal/MoveLinkModal'
 import { useDrawerStore } from '@/src/store/drawerStore'
 import { LinkItem, SearchLinkItem } from '@/src/types/link/link'
-import Image from 'next/image'
 import { useState } from 'react'
 
 interface LinkListContainerProps {
@@ -50,19 +50,7 @@ export function LinkListContainer({
 
   return isLoading ? (
     <div className="pt-35 text-center">Loading...</div>
-  ) : !linkList.length ? (
-    <div className="flex flex-col items-center justify-center gap-20 pt-80">
-      <Image
-        src={isSearchMode ? '/images/empty-link.png' : '/images/paper.png'}
-        alt="paper"
-        width={isSearchMode ? 92 : 57}
-        height={71}
-      />
-      <span className="text-body-1 text-gray-default">
-        {isSearchMode ? '찾는 링크가 없어요.' : '저장한 링크가 없어요.'}
-      </span>
-    </div>
-  ) : (
+  ) : linkList.length ? (
     <div className="flex w-full flex-col gap-30 pt-23">
       <span className="text-24 text-gray-default leading-28 font-semibold">
         내 링크
@@ -96,5 +84,16 @@ export function LinkListContainer({
         />
       )}
     </div>
+  ) : (
+    <EmptyLinks
+      message={isSearchMode ? '찾는 링크가 없어요.' : '저장한 링크가 없어요.'}
+      className="h-240"
+      imageProps={{
+        src: isSearchMode ? '/images/empty-link.png' : '/images/paper.png',
+        alt: isSearchMode ? 'empty link' : 'paper',
+        width: isSearchMode ? 92 : 57,
+        height: isSearchMode ? 71 : 57,
+      }}
+    />
   )
 }
