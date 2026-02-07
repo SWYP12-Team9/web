@@ -11,8 +11,8 @@ export default function AuthLayout({
     <div className="bg-blue-light flex h-screen">
       <Sidebar />
 
-      <main className="relative flex flex-1 pt-24">
-        <div className="rounded-tl-20 flex flex-1 flex-col bg-white">
+      <main className="relative flex min-w-0 flex-1 pt-24">
+        <div className="rounded-tl-20 flex min-w-0 flex-1 flex-col bg-white">
           {children}
         </div>
         <OpenSaveLinkButton />
