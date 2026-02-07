@@ -22,16 +22,17 @@ export function ProfileField({
 }: ProfileFieldProps) {
   return (
     <div className="flex flex-col gap-8">
-      <label className="text-body-3 font-semibold text-gray-700">
-        {label} {required && <span className="text-primary-500">*</span>}
+      <label className="text-body-3 text-black/70">
+        {label}{' '}
+        {required && <span className="text-blue-normal-default">*</span>}
       </label>
       <div className={`relative ${width}`}>
         <Input
           {...registerProps}
           placeholder={placeholder}
-          className="rounded-8 text-body-2 h-40 w-full bg-white px-16 placeholder:text-gray-400"
+          className="rounded-8 text-body-2 h-40 w-full bg-white px-16 placeholder:text-black/40"
         />
-        <span className="text-caption-2 absolute -top-24 right-0 text-gray-400">
+        <span className="text-caption-2 text-gray-disabled absolute -top-24 right-0">
           {currentLength}/{maxLength}
         </span>
       </div>

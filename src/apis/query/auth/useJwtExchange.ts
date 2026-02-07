@@ -8,7 +8,6 @@ export const useJwtExchangeMutation = () => {
     onSuccess: (data) => {
       localStorage.setItem('accessToken', data.accessToken)
       localStorage.setItem('refreshToken', data.refreshToken)
-      console.log('토큰 교환 성공!')
     },
     onError: (error: AxiosError) => {
       console.error('토큰 교환 실패:', error)

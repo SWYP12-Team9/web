@@ -1,7 +1,9 @@
 'use client'
 
 import { usePostProfileMutation } from '@/src/apis/query/user/usePostUserProfile'
+import { requestGetUserInfo } from '@/src/apis/request/requestGetUserInfo'
 import { ProfileModal } from '@/src/components/Modal/ProfileModal'
+import { useAuthStore } from '@/src/store/authStore'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { FieldValues } from 'react-hook-form'
 
@@ -13,6 +15,7 @@ export function ProfileSetup() {
   const isNewUser = searchParams.get('isNewUser') === 'true'
 
   const { mutate: postProfile } = usePostProfileMutation()
+  const login = useAuthStore((state) => state.login)
 
   const handleProfileSubmit = (data: FieldValues) => {
     postProfile(
@@ -25,7 +28,13 @@ export function ProfileSetup() {
         backgroundImage: data.backgroundFile,
       },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
+          const { data: userInfo } = await requestGetUserInfo()
+          login({
+            userId: userInfo.userId,
+            nickname: userInfo.nickname,
+            profileImage: userInfo.profileImageUrl,
+          })
           router.replace(pathname)
         },
       },
