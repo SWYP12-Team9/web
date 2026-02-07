@@ -1,17 +1,16 @@
 'use client'
 
 import { useGetLinkList } from '@/src/apis/query/link/useGetLinkList'
+import { useGetSearchLinks } from '@/src/apis/query/link/useGetSearchLinks'
 import { useGetReferenceList } from '@/src/apis/query/reference/useGetReferenceList'
 import { Tab, Tabs } from '@/src/components/Tabs'
 import { ALL_TAB } from '@/src/constants/defaultTap'
-import { ReferenceItem } from '@/src/types/reference/reference'
-import { useState } from 'react'
-import { LinkListContainer } from './_components/LinkListContainer/LinkListContainer'
-import { SearchLinksInput } from './_components/SearchLinksInput/SearchLinksInput'
-import { SaveLinkInput } from './_components/SaveLinkInput/SaveLinkInput'
-import { useDrawerStore } from '@/src/store/drawerStore'
 import { useDebounce } from '@/src/hooks/useDebounce'
-import { useGetSearchLinks } from '@/src/apis/query/link/useGetSearchLinks'
+import { useDrawerStore } from '@/src/store/drawerStore'
+import { useState } from 'react'
+import { LinkListContainer } from '../_components/LinkListContainer/LinkListContainer'
+import { SearchLinksInput } from '../_components/SearchLinksInput/SearchLinksInput'
+import { SaveLinkInput } from './_components/SaveLinkInput/SaveLinkInput'
 
 export default function Home() {
   const [searchKeyword, setSearchKeyword] = useState('')
@@ -42,10 +41,13 @@ export default function Home() {
 
   const { data: referenceList } = useGetReferenceList({ type: 'all' })
 
-  const tabs = referenceList?.data?.contents.map((item: ReferenceItem) => ({
-    id: item.id,
-    title: item.title,
-  }))
+  const tabs =
+    referenceList?.pages.flatMap((page) =>
+      page.data.contents.map((item) => ({
+        id: item.id,
+        title: item.title,
+      })),
+    ) || []
 
   const handleTabChange = (tab: Tab) => {
     setSelectedTab(tab)

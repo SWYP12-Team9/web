@@ -1,15 +1,15 @@
-import { BaseResponse } from '@/src/types/response/response'
-import { axiosInstance } from '../instance/axiosInstance'
 import {
   ReferenceItem,
   ReferenceSortBy,
   ReferenceVisibility,
 } from '@/src/types/reference/reference'
+import { BaseResponse } from '@/src/types/response/response'
+import { axiosInstance } from '../instance/axiosInstance'
 
 export interface RequestGetReferenceListParams {
   type?: ReferenceVisibility
   sortBy?: ReferenceSortBy
-  cursor?: string
+  cursor?: string | null
   size?: number
 }
 
@@ -23,7 +23,7 @@ export const requestGetReferenceList = async ({
   type,
   sortBy,
   cursor,
-  size,
+  size = 20,
 }: RequestGetReferenceListParams): Promise<RequestGetReferenceListResponse> => {
   const res = await axiosInstance.get('/references', {
     params: {
