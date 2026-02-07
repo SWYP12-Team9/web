@@ -1,17 +1,17 @@
 'use client'
 
 import { useGetLinkList } from '@/src/apis/query/link/useGetLinkList'
+import { useGetSearchLinks } from '@/src/apis/query/link/useGetSearchLinks'
 import { useGetReferenceList } from '@/src/apis/query/reference/useGetReferenceList'
 import { Tab, Tabs } from '@/src/components/Tabs'
 import { ALL_TAB } from '@/src/constants/defaultTap'
+import { useDebounce } from '@/src/hooks/useDebounce'
+import { useDrawerStore } from '@/src/store/drawerStore'
 import { ReferenceItem } from '@/src/types/reference/reference'
 import { useState } from 'react'
-import { LinkListContainer } from './_components/LinkListContainer/LinkListContainer'
-import { SearchLinksInput } from './_components/SearchLinksInput/SearchLinksInput'
+import { LinkListContainer } from '../_components/LinkListContainer/LinkListContainer'
+import { SearchLinksInput } from '../_components/SearchLinksInput/SearchLinksInput'
 import { SaveLinkInput } from './_components/SaveLinkInput/SaveLinkInput'
-import { useDrawerStore } from '@/src/store/drawerStore'
-import { useDebounce } from '@/src/hooks/useDebounce'
-import { useGetSearchLinks } from '@/src/apis/query/link/useGetSearchLinks'
 
 export default function Home() {
   const [searchKeyword, setSearchKeyword] = useState('')
