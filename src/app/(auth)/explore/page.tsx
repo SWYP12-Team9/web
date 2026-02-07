@@ -1,15 +1,15 @@
 'use client'
 
 import { useGetCategories } from '@/src/apis/query/recommendation/useGetCategories'
-import { ProfileSetup } from './_components/ProfileSetup'
+import { useGetOtherUserLinkList } from '@/src/apis/query/recommendation/useGetOtherUserLinkList'
+import { useGetSearchOtherUserLinks } from '@/src/apis/query/recommendation/useGetSearchOtherUserLinks'
 import { Tab, Tabs } from '@/src/components/Tabs'
 import { ALL_TAB } from '@/src/constants/defaultTap'
-import { useState } from 'react'
-import { SearchLinksInput } from '../home/_components/SearchLinksInput/SearchLinksInput'
-import { useGetOtherUserLinkList } from '@/src/apis/query/recommendation/useGetOtherUserLinkList'
-import { OtherUserLinksContainer } from './_components/OtherUserLinksContainer/OtherUserLinksContainer'
 import { useDebounce } from '@/src/hooks/useDebounce'
-import { useGetSearchOtherUserLinks } from '@/src/apis/query/recommendation/useGetSearchOtherUserLinks'
+import { useState } from 'react'
+import { SearchLinksInput } from '../_components/SearchLinksInput/SearchLinksInput'
+import { OtherUserLinksContainer } from './_components/OtherUserLinksContainer/OtherUserLinksContainer'
+import { ProfileSetup } from './_components/ProfileSetup'
 
 export default function ExplorePage() {
   const [selectedTab, setSelectedTab] = useState<Tab>(ALL_TAB)
