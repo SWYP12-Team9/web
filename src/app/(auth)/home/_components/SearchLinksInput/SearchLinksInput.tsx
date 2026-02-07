@@ -3,16 +3,21 @@ import Image from 'next/image'
 
 interface SearchLinksInputProps {
   value: string
+  placeholder?: string
   onChange: (value: string) => void
 }
 
-export function SearchLinksInput({ value, onChange }: SearchLinksInputProps) {
+export function SearchLinksInput({
+  value,
+  placeholder,
+  onChange,
+}: SearchLinksInputProps) {
   return (
     <div className="relative">
       <Input
         className="rounded-100 text-body-1 px-40"
         height="h-60"
-        placeholder="왜 저장했는지로 검색해 보세요"
+        placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />

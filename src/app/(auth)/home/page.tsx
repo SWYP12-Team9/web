@@ -40,8 +40,6 @@ export default function Home() {
     ? (searchLinksData?.data?.contents ?? [])
     : (linkListData?.data?.contents ?? [])
 
-  const isLoading = isSearchMode ? isSearchLinksLoading : isLinkListLoading
-
   const { data: referenceList } = useGetReferenceList({ type: 'all' })
 
   const tabs = referenceList?.data?.contents.map((item: ReferenceItem) => ({
@@ -69,7 +67,11 @@ export default function Home() {
       <SaveLinkInput />
 
       <div className="sticky top-0 z-10 mt-25 bg-white">
-        <SearchLinksInput value={searchKeyword} onChange={handleSearchChange} />
+        <SearchLinksInput
+          value={searchKeyword}
+          placeholder="왜 저장했는지로 검색해 보세요"
+          onChange={handleSearchChange}
+        />
         <Tabs
           className="pt-35 pb-12"
           defaultTap={ALL_TAB}
@@ -81,7 +83,7 @@ export default function Home() {
 
       <LinkListContainer
         linkList={linkList}
-        isLoading={isLoading}
+        isLoading={isSearchMode ? isSearchLinksLoading : isLinkListLoading}
         isSearchMode={isSearchMode}
       />
     </div>
