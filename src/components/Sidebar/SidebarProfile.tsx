@@ -34,7 +34,7 @@ export default function SidebarProfile({
         <div className="animate-in fade-in duration-300">
           {isLoggedIn && user ? (
             <span className="text-body-3 text-gray-default font-medium">
-              {user.name}님
+              {user.nickname}님
             </span>
           ) : (
             <Link href="/login" className="text-body-3 text-gray-default">

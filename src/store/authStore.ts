@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 
 interface User {
-  name: string
   userId: string | number
   nickname: string
   profileImage: string | null
@@ -12,10 +11,11 @@ interface AuthState {
   user: User | null
   login: (userData: User) => void
   logout: () => void
+  setLoggedIn: (status: boolean) => void
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  isLoggedIn: false,
+  isLoggedIn: true,
   user: null,
 
   login: (userData) =>
@@ -23,6 +23,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       isLoggedIn: true,
       user: userData,
     }),
+
+  setLoggedIn: (status: boolean) => set({ isLoggedIn: status }),
 
   logout: () =>
     set({

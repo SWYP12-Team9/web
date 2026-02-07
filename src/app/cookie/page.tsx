@@ -1,6 +1,8 @@
 'use client'
 
 import { useJwtExchangeMutation } from '@/src/apis/query/auth/useJwtExchange'
+import { requestGetUserInfo } from '@/src/apis/request/requestGetUserInfo'
+import { useAuthStore } from '@/src/store/authStore'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -9,24 +11,35 @@ export default function CookiePage() {
   const searchParams = useSearchParams()
   const isNewUser = searchParams.get('isNewUser') === 'true'
 
+  const { setLoggedIn, login } = useAuthStore()
   const { mutate: exchangeToken } = useJwtExchangeMutation()
 
   useEffect(() => {
     exchangeToken(undefined, {
-      onSuccess: (data) => {
-        console.log('토큰 교환 성공:', data)
-
+      onSuccess: async () => {
         if (isNewUser) {
+          setLoggedIn(true)
           router.replace('/explore?isNewUser=true')
         } else {
-          router.replace('/')
+          try {
+            const { data } = await requestGetUserInfo()
+            login({
+              userId: data.userId,
+              nickname: data.nickname,
+              profileImage: data.profileImageUrl,
+            })
+            router.replace('/explore')
+          } catch (error) {
+            console.error('유저 정보 로드 실패', error)
+            router.replace('/explore')
+          }
         }
       },
       onError: (error) => {
-        console.error('토큰 교환 중 에러 발생 (502/401):', error)
+        console.error('토큰 교환 중 에러 발생:', error)
       },
     })
-  }, [exchangeToken, isNewUser, router])
+  }, [exchangeToken, isNewUser, router, setLoggedIn, login])
 
   return (
     <div className="flex min-h-screen items-center justify-center">
