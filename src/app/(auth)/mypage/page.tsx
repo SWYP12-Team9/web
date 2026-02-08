@@ -1,0 +1,146 @@
+'use client'
+
+import { useGetMyPageStats } from '@/src/apis/query/mypage/useGetMyPageStats'
+import { useGetUserInfo } from '@/src/apis/query/user/useGetUserInfo'
+import { usePatchUserProfileMutation } from '@/src/apis/query/user/usePatchUserProfile'
+import { ProfileModal } from '@/src/components/Modal/ProfileModal'
+import Image from 'next/image'
+import { useState } from 'react'
+import { ReadStateCard } from './_components/ReadStateCard/ReadStateCard'
+import { SavePatternCard } from './_components/SavePatternCard/SavePatternCard'
+import { TopReferencesCard } from './_components/TopReferenceCard/TopReferenceCard'
+
+export default function MyPage() {
+  const { data: userStats, isLoading, error } = useGetMyPageStats()
+  const { mutate: updateProfile } = usePatchUserProfileMutation()
+  const { data: userInfo } = useGetUserInfo()
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+
+  if (isLoading) {
+    return (
+      <div className="h-full bg-gray-50 p-24">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid grid-cols-3 gap-24">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="rounded-20 h-400 animate-pulse bg-white"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !userStats?.data) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <p className="text-gray-600">데이터를 불러올 수 없습니다.</p>
+      </div>
+    )
+  }
+
+  const handleProfileSubmit = (data: {
+    profile: { nickname: string; introduction: string }
+    profileImage?: File | null
+    backgroundImage?: File | null
+  }) => {
+    updateProfile(
+      {
+        profile: data.profile,
+        profileImage: data.profileImage,
+        backgroundImage: data.backgroundImage,
+      },
+      {
+        onSuccess: () => {
+          setIsProfileModalOpen(false)
+        },
+      },
+    )
+  }
+
+  const { topReferences, readState, savePattern } = userStats.data
+
+  return (
+    <div className="flex h-full flex-col overflow-hidden">
+      <div className="relative min-h-[180px] flex-grow px-29 pt-29">
+        <div className="rounded-20 relative h-full w-full overflow-hidden">
+          <Image
+            src={
+              userInfo?.data.backgroundImageUrl ||
+              '/images/defaultBackground.png'
+            }
+            alt="배경이미지"
+            fill
+            className="object-cover"
+          />
+        </div>
+      </div>
+
+      <div className="flex-shrink-0 px-24">
+        <div className="relative -mt-50 mb-32 ml-50">
+          <div className="relative mb-18 w-fit">
+            <div className="relative h-75 w-75 overflow-hidden rounded-full">
+              <Image
+                src={
+                  userInfo?.data.profileImageUrl || '/images/defaultProfile.png'
+                }
+                alt="프로필"
+                fill
+                className="object-cover"
+              />
+            </div>
+
+            <button className="absolute -right-8 bottom-0 flex h-32 w-32 items-center justify-center">
+              <Image
+                src="/icons/circle-camera.svg"
+                alt="편집"
+                width={24}
+                height={24}
+              />
+            </button>
+          </div>
+
+          <div className="mb-10 flex items-center gap-12">
+            <h1 className="text-heading-3 text-gray-default">
+              {userInfo?.data.nickname}
+            </h1>
+            <button
+              onClick={() => setIsProfileModalOpen(true)}
+              className="cursor-pointer"
+            >
+              <Image
+                src="/icons/profile-edit.svg"
+                alt="편집"
+                width={19}
+                height={19}
+              />
+            </button>
+          </div>
+
+          <p className="text-body-2 text-gray-default mb-32">
+            {userInfo?.data.introduction || '반갑습니다'}
+          </p>
+
+          <div className="grid grid-cols-3 gap-19 pb-40">
+            <TopReferencesCard data={topReferences} />
+            <ReadStateCard data={readState} />
+            <SavePatternCard data={savePattern} />
+          </div>
+        </div>
+      </div>
+      <ProfileModal
+        isModalOpen={isProfileModalOpen}
+        setModalOpen={setIsProfileModalOpen}
+        onSubmit={handleProfileSubmit}
+        initialData={{
+          nickname: userInfo?.data.nickname || '',
+          introduction: userInfo?.data.introduction || '',
+          profileImageUrl: userInfo?.data.profileImageUrl || '',
+          backgroundImageUrl: userInfo?.data.backgroundImageUrl || '',
+        }}
+      />
+    </div>
+  )
+}
