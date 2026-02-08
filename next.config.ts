@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'placehold.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'swyp-bucket.kr.object.ncloudstorage.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 }

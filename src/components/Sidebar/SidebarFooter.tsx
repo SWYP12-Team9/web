@@ -1,5 +1,6 @@
 'use client'
 
+import { useLogout } from '@/src/apis/query/auth/useLogout'
 import { useAuthStore } from '@/src/store/authStore'
 import { cn } from '@/src/utils/cn'
 import Image from 'next/image'
@@ -20,6 +21,8 @@ export function SidebarFooter({ isExpanded }: { isExpanded: boolean }) {
     const targetUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/oauth2/authorization/${provider}`
     window.location.assign(targetUrl)
   }
+
+  const { mutate: logout } = useLogout()
 
   if (!isLoggedIn) {
     return (
@@ -55,12 +58,14 @@ export function SidebarFooter({ isExpanded }: { isExpanded: boolean }) {
       >
         <NavSetting className="h-full w-full" />
       </Link>
-      <Link
-        href="/logout"
+      <button
+        type="button"
+        onClick={() => logout()}
         className="flex h-40 w-40 items-center justify-center"
+        aria-label="logout"
       >
         <NavLogout className="h-full w-full" />
-      </Link>
+      </button>
     </div>
   )
 }
