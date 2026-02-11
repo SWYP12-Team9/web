@@ -6,15 +6,19 @@ import { useGetSearchOtherUserLinks } from '@/src/apis/query/recommendation/useG
 import { Tab, Tabs } from '@/src/components/Tabs'
 import { ALL_TAB } from '@/src/constants/defaultTap'
 import { useDebounce } from '@/src/hooks/useDebounce'
+import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { SearchLinksInput } from '../_components/SearchLinksInput/SearchLinksInput'
 import { OtherUserLinksContainer } from './_components/OtherUserLinksContainer/OtherUserLinksContainer'
 import { LoginModal } from '@/src/components/LoginModal'
 
 export default function ExplorePage() {
+  const searchParams = useSearchParams()
   const [selectedTab, setSelectedTab] = useState<Tab>(ALL_TAB)
   const [searchKeyword, setSearchKeyword] = useState('')
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(
+    searchParams.get('login') === 'true',
+  )
 
   const debouncedKeyword = useDebounce({
     value: searchKeyword,
@@ -56,11 +60,8 @@ export default function ExplorePage() {
   }
 
   return (
-    <main
-      className="flex h-full flex-col overflow-y-hidden px-84"
-      onClick={() => setIsLoginModalOpen(true)}
-    >
-      <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
+    <main className="flex h-full flex-col overflow-y-hidden px-84">
+      <div className="shrink-0">
         <SearchLinksInput
           value={searchKeyword}
           onChange={handleSearchChange}
@@ -75,7 +76,7 @@ export default function ExplorePage() {
         />
       </div>
 
-      <div onClick={(e) => e.stopPropagation()}>
+      <div>
         <OtherUserLinksContainer
           otherUserLinkList={otherUserLinkList}
           isLoading={
